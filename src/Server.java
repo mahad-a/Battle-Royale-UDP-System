@@ -1,11 +1,10 @@
 import java.io.*;
 import java.net.*;
-import java.util.Arrays;
 
 public class Server {
     DatagramPacket sendPacket, receivePacket;
     DatagramSocket sendReceiveSocket;
-    private GameState gameState = new GameState();
+    private final GameState gameState = new GameState();
 
     public Server(){
         try {
@@ -37,7 +36,7 @@ public class Server {
             System.out.println("Containing: ");
             String serverReceived = new String(data,0,receivePacket.getLength());
             System.out.println(serverReceived);
-            String response = processRequest(serverReceived, receivePacket);
+            String response = processRequest(serverReceived);
 
             sendPacket = new DatagramPacket(response.getBytes(), response.getBytes().length,
                     receivePacket.getAddress(), receivePacket.getPort());
@@ -53,7 +52,7 @@ public class Server {
         }
     }
 
-    public String processRequest(String message, DatagramPacket packet){
+    public String processRequest(String message){
         String[] m = message.split(":");
         return switch (m[0]) {
             case "JOIN" -> {
