@@ -32,10 +32,8 @@ public class Server {
             System.out.println("From host: " + receivePacket.getAddress());
             System.out.println("From host port: " + receivePacket.getPort());
             System.out.println("Length: " + receivePacket.getLength());
-
-            System.out.println("Containing: ");
             String serverReceived = new String(data,0,receivePacket.getLength());
-            System.out.println(serverReceived);
+            System.out.println("Containing: " + serverReceived);
             String response = processRequest(serverReceived);
 
             sendPacket = new DatagramPacket(response.getBytes(), response.getBytes().length,
@@ -53,8 +51,8 @@ public class Server {
             System.out.println("To host: " + sendPacket.getAddress());
             System.out.println("To host port: " + sendPacket.getPort());
             System.out.println("Length: " + sendPacket.getLength());
-            System.out.print("Containing: ");
-            System.out.println(new String(sendPacket.getData(),0,sendPacket.getLength()));
+            String serverSent = new String(sendPacket.getData(),0,sendPacket.getLength());
+            System.out.print("Containing: " + serverSent);
         }
     }
 

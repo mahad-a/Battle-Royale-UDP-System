@@ -32,13 +32,12 @@ public class Host {
             System.out.println("From client: " + clientReceivePacket.getAddress());
             System.out.println("From client port: " + clientReceivePacket.getPort());
             System.out.println("Length: " + clientReceivePacket.getLength());
-            System.out.print("Containing: ");
+            String hostReceivedClient = new String(data,0,clientReceivePacket.getLength());
 
-            String clientReceived = new String(data,0,clientReceivePacket.getLength());
-            System.out.println(clientReceived);
+            System.out.print("Containing: " + hostReceivedClient);
 
             try {
-                serverSendPacket = new DatagramPacket(clientReceived.getBytes(), clientReceived.getBytes().length,
+                serverSendPacket = new DatagramPacket(hostReceivedClient.getBytes(), hostReceivedClient.getBytes().length,
                         InetAddress.getLocalHost(), 6000);
                 serverSocket.send(serverSendPacket);
             } catch (IOException e) {
@@ -51,8 +50,9 @@ public class Host {
             System.out.println("To server: " + serverSendPacket.getAddress());
             System.out.println("To server port: " + serverSendPacket.getPort());
             System.out.println("Length: " + serverSendPacket.getLength());
-            System.out.print("Containing: ");
-            System.out.println(new String(serverSendPacket.getData(),0,serverSendPacket.getLength()));
+            String hostForwardServer = new String(serverSendPacket.getData(),0,serverSendPacket.getLength());
+            System.out.print("Containing: " + hostForwardServer);
+            System.out.println();
 
 
             try {
@@ -67,13 +67,11 @@ public class Host {
             System.out.println("From server: " + serverReceivePacket.getAddress());
             System.out.println("From server port: " + serverReceivePacket.getPort());
             System.out.println("Length: " + serverReceivePacket.getLength());
-            System.out.print("Containing: ");
-
-            String serverReceived = new String(data,0,serverReceivePacket.getLength());
-            System.out.println(serverReceived);
+            String hostReceivedServer = new String(data,0,serverReceivePacket.getLength());
+            System.out.print("Containing: " + hostReceivedServer);
 
             try {
-                clientSendPacket = new DatagramPacket(serverReceived.getBytes(), serverReceived.getBytes().length,
+                clientSendPacket = new DatagramPacket(hostReceivedServer.getBytes(), hostReceivedServer.getBytes().length,
                         clientReceivePacket.getAddress(), clientReceivePacket.getPort());
                 clientSocket.send(clientSendPacket);
             } catch (UnknownHostException e) {
@@ -88,8 +86,8 @@ public class Host {
             System.out.println("To client: " + clientSendPacket.getAddress());
             System.out.println("To client port: " + clientSendPacket.getPort());
             System.out.println("Length: " + clientSendPacket.getLength());
-            System.out.print("Containing: ");
-            System.out.println(new String(clientSendPacket.getData(),0,clientSendPacket.getLength()));
+            String hostForwardClient = new String(clientSendPacket.getData(),0,clientSendPacket.getLength());
+            System.out.print("Containing: " + hostForwardClient);
 
         }
     }
