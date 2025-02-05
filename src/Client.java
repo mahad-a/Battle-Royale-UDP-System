@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.*;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Client {
@@ -64,11 +65,24 @@ public class Client {
         // Form a String from the byte array.
         String received = new String(data,0,receivePacket.getLength());
         System.out.println(received);
+        String[] m = received.split(":");
+        int playerId = Integer.parseInt(m[1]);
+        System.out.println("Joined game with playerId = " + playerId);
 
         while (true){
             Scanner s = new Scanner(System.in);
+            System.out.println("Commands: MOVE dx dy | PICKUP lootId | STATE | QUIT");
             System.out.println("Enter your command: ");
             String prompt = s.nextLine();
+
+            String[] processPrompt = prompt.split(" ");
+            if (Objects.equals(processPrompt[0], "MOVE")){
+                prompt = String.format("%s:%d:%s:%s",  processPrompt[0], playerId, processPrompt[1], processPrompt[2]);
+            } else if (Objects.equals(processPrompt[0], "PICKUP")) {
+                prompt = String.format("%s:%d:%s", processPrompt[0], playerId, processPrompt[1]);
+            } else if (Objects.equals(processPrompt[0], "QUIT")) {
+                System.exit(1);
+            }
             byte[] msg = prompt.getBytes();
             try {
                 sendPacket = new DatagramPacket(msg, msg.length,
@@ -87,8 +101,7 @@ public class Client {
             System.out.print("Containing: ");
             System.out.println(new String(sendPacket.getData(),0,sendPacket.getLength()));
 
-            byte[] data2 = new byte[1024];
-            receivePacket = new DatagramPacket(data2, data2.length);
+            receivePacket = new DatagramPacket(data, data.length);
 
             try {
                 sendReceiveSocket.receive(receivePacket);
@@ -103,6 +116,9 @@ public class Client {
             System.out.println("From host port: " + receivePacket.getPort());
             System.out.println("Length: " + receivePacket.getLength());
             System.out.print("Containing: ");
+
+            String serverReceived = new String(data,0,receivePacket.getLength());
+            System.out.println(serverReceived);
         }
 
     }
