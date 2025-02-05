@@ -74,7 +74,7 @@ public class Host {
 
             try {
                 clientSendPacket = new DatagramPacket(serverReceived.getBytes(), serverReceived.getBytes().length,
-                        InetAddress.getLocalHost(), 5000);
+                        clientReceivePacket.getAddress(), clientReceivePacket.getPort());
                 clientSocket.send(clientSendPacket);
             } catch (UnknownHostException e) {
                 e.printStackTrace();

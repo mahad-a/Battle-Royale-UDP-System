@@ -27,6 +27,7 @@ public class Server {
                 e.printStackTrace();
             }
 
+            System.out.println();
             System.out.println("Server: received: ");
             System.out.println("From host: " + receivePacket.getAddress());
             System.out.println("From host port: " + receivePacket.getPort());
@@ -47,6 +48,13 @@ public class Server {
                 throw new RuntimeException(e);
             }
 
+            System.out.println();
+            System.out.println("Server: sent:");
+            System.out.println("To host: " + sendPacket.getAddress());
+            System.out.println("To host port: " + sendPacket.getPort());
+            System.out.println("Length: " + sendPacket.getLength());
+            System.out.print("Containing: ");
+            System.out.println(new String(sendPacket.getData(),0,sendPacket.getLength()));
         }
     }
 

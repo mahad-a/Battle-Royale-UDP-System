@@ -34,6 +34,7 @@ public class Client {
             System.exit(1);
         }
 
+        System.out.println();
         System.out.println("Client: sent:");
         System.out.println("To host: " + sendPacket.getAddress());
         System.out.println("To host port: " + sendPacket.getPort());
@@ -53,6 +54,7 @@ public class Client {
             System.exit(1);
         }
 
+        System.out.println();
         System.out.println("Client: received:");
         System.out.println("From host: " + receivePacket.getAddress());
         System.out.println("From host port: " + receivePacket.getPort());
@@ -77,6 +79,7 @@ public class Client {
                 System.exit(1);
             }
 
+            System.out.println();
             System.out.println("Client: sent:");
             System.out.println("To host: " + sendPacket.getAddress());
             System.out.println("To host port: " + sendPacket.getPort());
@@ -94,6 +97,7 @@ public class Client {
                 System.exit(1);
             }
 
+            System.out.println();
             System.out.println("Client: received:");
             System.out.println("From host: " + receivePacket.getAddress());
             System.out.println("From host port: " + receivePacket.getPort());
