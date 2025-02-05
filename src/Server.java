@@ -22,7 +22,6 @@ public class Server {
 
         while (true){
             try {
-                System.out.println("trying to receive");
                 sendReceiveSocket.receive(receivePacket);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -47,7 +46,6 @@ public class Server {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-
 
         }
     }
