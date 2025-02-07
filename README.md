@@ -76,7 +76,7 @@ If a input guide is needed, you can find one [here](docs/test_inputs.txt) that w
 ## Documentation
 Below you can find a UML sequence diagram and a UML class diagram of the system
 ### UML class diagram
-
+![UML](docs/uml_class_diagram.png)
 ### UML sequence diagram
 
 
