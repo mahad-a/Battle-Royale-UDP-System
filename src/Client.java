@@ -22,9 +22,29 @@ public class Client {
         return s.nextLine();
     }
 
-    public void startClient(){
+    public String sendRequest(String receiver){
+        String sent = new String(sendPacket.getData(),0,sendPacket.getLength());
+        System.out.println("\nClient: sent:" +
+                "\nTo " + receiver + ": " + sendPacket.getAddress() +
+                "\nTo " + receiver + " port: " + sendPacket.getPort() +
+                "\nLength: " + sendPacket.getLength() +
+                "\nContaining: " + sent);
+        return sent;
+    }
+
+    public String receiveRequest(String sender, byte[] data){
+        String received = new String(data,0,receivePacket.getLength());
+        System.out.println("\nClient: received:"+
+                "\nFrom " + sender + ": " + receivePacket.getAddress() +
+                "\nFrom " + sender + " port: " + receivePacket.getPort() +
+                "\nLength: " + receivePacket.getLength() +
+                "\nContaining: " + received);
+        return received;
+    }
+
+    public int playerEnrollment(byte[] data){
         String playerName = "JOIN:" + promptUsername();
-        System.out.println(playerName);
+        // System.out.println(playerName);
         byte[] msgPlayerName = playerName.getBytes();
         try {
             sendPacket = new DatagramPacket(msgPlayerName, msgPlayerName.length,
@@ -35,39 +55,28 @@ public class Client {
             System.exit(1);
         }
 
-        System.out.println();
-        System.out.println("Client: sent:");
-        System.out.println("To host: " + sendPacket.getAddress());
-        System.out.println("To host port: " + sendPacket.getPort());
-        System.out.println("Length: " + sendPacket.getLength());
-        System.out.print("Containing: ");
-        System.out.println(new String(sendPacket.getData(),0,sendPacket.getLength()));
-
-
-        byte[] data = new byte[1024];
-        receivePacket = new DatagramPacket(data, data.length);
+        sendRequest("host");
 
         try {
-            // Block until a datagram is received via sendReceiveSocket.
             sendReceiveSocket.receive(receivePacket);
         } catch(IOException e) {
             e.printStackTrace();
             System.exit(1);
         }
 
-        System.out.println();
-        System.out.println("Client: received:");
-        System.out.println("From host: " + receivePacket.getAddress());
-        System.out.println("From host port: " + receivePacket.getPort());
-        System.out.println("Length: " + receivePacket.getLength());
-        System.out.print("Containing: ");
+        String receivedJoin = receiveRequest("host", data);
 
-        // Form a String from the byte array.
-        String received = new String(data,0,receivePacket.getLength());
-        System.out.println(received);
-        String[] m = received.split(":");
+        String[] m = receivedJoin.split(":");
         int playerId = Integer.parseInt(m[1]);
         System.out.println("Joined game with playerId = " + playerId);
+        return playerId;
+    }
+
+    public void startClient(){
+        byte[] data = new byte[1024];
+        receivePacket = new DatagramPacket(data, data.length);
+
+        int playerId = playerEnrollment(data);
 
         while (true){
             Scanner s = new Scanner(System.in);
@@ -81,10 +90,7 @@ public class Client {
             } else if (Objects.equals(processPrompt[0], "PICKUP")) {
                 prompt = String.format("%s:%d:%s", processPrompt[0], playerId, processPrompt[1]);
             }
-//            else if (Objects.equals(processPrompt[0], "QUIT")) {
-//                sendReceiveSocket.close();
-//                System.exit(1);
-//            }
+
             byte[] msg = prompt.getBytes();
             try {
                 sendPacket = new DatagramPacket(msg, msg.length,
@@ -95,13 +101,7 @@ public class Client {
                 System.exit(1);
             }
 
-            System.out.println();
-            System.out.println("Client: sent:");
-            System.out.println("To host: " + sendPacket.getAddress());
-            System.out.println("To host port: " + sendPacket.getPort());
-            System.out.println("Length: " + sendPacket.getLength());
-            String clientSent = new String(sendPacket.getData(),0,sendPacket.getLength());
-            System.out.print("Containing: " + clientSent);
+            String clientSent = sendRequest("host");
 
             if (Objects.equals(clientSent, "QUIT")) {
                 sendReceiveSocket.close();
@@ -117,14 +117,7 @@ public class Client {
                 System.exit(1);
             }
 
-            System.out.println();
-            System.out.println("Client: received:");
-            System.out.println("From host: " + receivePacket.getAddress());
-            System.out.println("From host port: " + receivePacket.getPort());
-            System.out.println("Length: " + receivePacket.getLength());
-            String clientReceived = new String(data,0,receivePacket.getLength());
-            System.out.print("Containing: " + clientReceived);
-            System.out.println();
+            receiveRequest("host", data);
         }
 
     }
