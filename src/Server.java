@@ -22,6 +22,9 @@ public class Server {
 
         while (true){
             try {
+                if (sendReceiveSocket.isClosed()){
+                    System.exit(1);
+                }
                 sendReceiveSocket.receive(receivePacket);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -35,6 +38,11 @@ public class Server {
             String serverReceived = new String(data,0,receivePacket.getLength());
             System.out.println("Containing: " + serverReceived);
             String response = processRequest(serverReceived);
+
+            if (serverReceived.equals("QUIT")){
+                sendReceiveSocket.close();
+                System.exit(1);
+            }
 
             sendPacket = new DatagramPacket(response.getBytes(), response.getBytes().length,
                     receivePacket.getAddress(), receivePacket.getPort());

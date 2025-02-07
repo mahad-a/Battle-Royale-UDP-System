@@ -80,9 +80,11 @@ public class Client {
                 prompt = String.format("%s:%d:%s:%s",  processPrompt[0], playerId, processPrompt[1], processPrompt[2]);
             } else if (Objects.equals(processPrompt[0], "PICKUP")) {
                 prompt = String.format("%s:%d:%s", processPrompt[0], playerId, processPrompt[1]);
-            } else if (Objects.equals(processPrompt[0], "QUIT")) {
-                System.exit(1);
             }
+//            else if (Objects.equals(processPrompt[0], "QUIT")) {
+//                sendReceiveSocket.close();
+//                System.exit(1);
+//            }
             byte[] msg = prompt.getBytes();
             try {
                 sendPacket = new DatagramPacket(msg, msg.length,
@@ -100,6 +102,11 @@ public class Client {
             System.out.println("Length: " + sendPacket.getLength());
             String clientSent = new String(sendPacket.getData(),0,sendPacket.getLength());
             System.out.print("Containing: " + clientSent);
+
+            if (Objects.equals(clientSent, "QUIT")) {
+                sendReceiveSocket.close();
+                System.exit(1);
+            }
 
             receivePacket = new DatagramPacket(data, data.length);
 

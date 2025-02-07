@@ -55,6 +55,12 @@ public class Host {
             System.out.print("Containing: " + hostForwardServer);
             System.out.println();
 
+            if (hostReceivedClient.equals("QUIT") && hostForwardServer.equals("QUIT")){
+                clientSocket.close();
+                serverSocket.close();
+                System.exit(1);
+            }
+
 
             try {
                 serverSocket.receive(serverReceivePacket);
