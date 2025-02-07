@@ -28,6 +28,7 @@ public class Host {
                 System.exit(1);
             }
 
+            System.out.println();
             System.out.println("Host: received: ");
             System.out.println("From client: " + clientReceivePacket.getAddress());
             System.out.println("From client port: " + clientReceivePacket.getPort());

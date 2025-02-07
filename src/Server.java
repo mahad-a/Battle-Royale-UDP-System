@@ -68,6 +68,7 @@ public class Server {
                 yield "MOVE_OK";
             }
             case "PICKUP" -> {
+                System.out.println(m[1] + "," + m[2]);
                 if (gameState.processPickup(Integer.parseInt(m[1]), Integer.parseInt(m[2]))) yield "PICKUP_OK";
                 yield "PICKUP_FAIL";
             }

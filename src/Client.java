@@ -73,7 +73,7 @@ public class Client {
             Scanner s = new Scanner(System.in);
             System.out.println("Commands: MOVE dx dy | PICKUP lootId | STATE | QUIT");
             System.out.println("Enter your command: ");
-            String prompt = s.nextLine();
+            String prompt = s.nextLine().toUpperCase();
 
             String[] processPrompt = prompt.split(" ");
             if (Objects.equals(processPrompt[0], "MOVE")){
@@ -117,7 +117,7 @@ public class Client {
             System.out.println("Length: " + receivePacket.getLength());
             String clientReceived = new String(data,0,receivePacket.getLength());
             System.out.print("Containing: " + clientReceived);
-
+            System.out.println();
         }
 
     }
