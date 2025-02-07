@@ -22,7 +22,7 @@ relays them to the **Client**. From the **Client**’s perspective, the Host app
 the Server’s perspective, the Host appears to be the **Client**. For this particular implementation, the **Intermediate 
 Host** will simply forward packets without modification.
 
-## Structure 
+## Structure
 
 ### Client.java
 - Represents the client, handles user input and sends gameplay requests to the `Host`. To which the requests
